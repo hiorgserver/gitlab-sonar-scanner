@@ -10,15 +10,16 @@ stages:
 
 sonarqube:
   stage: analysis
-  image: ciricihq/gitlab-sonar-scanner
-  dependencies:
-  - test
+  image: hiorgserver/gitlab-sonar-scanner
   variables:
     SONAR_URL: "http://your-gocd-server:9000"
-    SONAR_PROJECT_KEY: "your-project-key"
+    SONAR_TOKEN: "$GITLAB_CI_SECRET_VAR_SONAR_TOKEN"
+    SONAR_PROJECT_KEY: "P$CI_PROJECT_ID"
     SONAR_PROJECT_NAME: "$CI_PROJECT_NAME"
-    SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
-    SONAR_ANALYSIS_MODE: "issues"
+    SONAR_BRANCH: "$CI_COMMIT_REF_NAME"
+    SONAR_PROJECT_VERSION: "$CI_JOB_ID"
+    SONAR_GITLAB_COMMENT: "true"
+    SONAR_PUBLISH: "true"
   script:
   - /usr/bin/sonar-scanner-run.sh
 ```
@@ -29,18 +30,15 @@ You should have analysed the project by hand before to create it in your sonarqu
 
 Can be checked in the official documentation: https://docs.sonarqube.org/display/SONARQUBE43/Analysis+Parameters
 
-- SONAR__URL
+- SONAR_URL
+- SONAR_PROJECT_KEY
+- SONAR_PROJECT_NAME
 - SONAR_PROJECT_VERSION
+- SONAR_TOKEN
 - SONAR_DEBUG
-- SONAR_SOURCES
+- SONAR_SOURCES _or_ SONAR_SCAN_SUBDIR
 - SONAR_PROFILE
 - SONAR_LANGUAGE
-- SONAR_PROJECT_NAME
 - SONAR_BRANCH
-- SONAR_ANALYSIS_MODE
-
-### sonar-gitlab specific
-
-- SONAR_GITLAB_PROJECT_ID: The unique id, path with namespace, name with namespace, web url, ssh url or http url of the current project that GitLab.
-- CI_BUILD_REF
-- CI_BUILD_REF_NAME
+- SONAR_GITLAB_COMMENT [true|false]
+- SONAR_PUBLISH [true|false]
