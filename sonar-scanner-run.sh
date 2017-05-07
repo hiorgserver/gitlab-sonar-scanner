@@ -7,7 +7,7 @@
   else
     SONAR_SOURCES=$(pwd)
     if [ ! -z "$SONAR_SCAN_SUBDIR" ]; then
-      SCANDIR="$SONAR_SOURCES/$SONAR_SCAN_SUBDIR"
+      SONAR_SOURCES="$SONAR_SOURCES/$SONAR_SCAN_SUBDIR"
     fi
     COMMAND="$COMMAND -Dsonar.sources=\"$SONAR_SOURCES\""
   fi
