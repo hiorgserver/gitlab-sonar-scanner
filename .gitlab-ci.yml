@@ -1,0 +1,17 @@
+stages:
+- analysis
+
+sonarqube:
+  stage: analysis
+  image: hiorgserver/gitlab-sonar-scanner
+  variables:
+    SONAR_URL: "http://your-gocd-server:9000"
+    SONAR_TOKEN: "$GITLAB_CI_SECRET_VAR_SONAR_TOKEN"
+    SONAR_PROJECT_KEY: "$CI_PROJECT_NAMESPACE:$CI_PROJECT_NAME"
+    SONAR_PROJECT_NAME: "$CI_PROJECT_NAME"
+    SONAR_BRANCH: "$CI_COMMIT_REF_NAME"
+    SONAR_PROJECT_VERSION: "$CI_JOB_ID"
+    SONAR_GITLAB_COMMENT: "true"
+    SONAR_PUBLISH: "true"
+  script:
+  - /usr/bin/sonar-scanner-run.sh
