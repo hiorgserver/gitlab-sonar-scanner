@@ -64,10 +64,15 @@
     
     echo "(comment 2 gitlab)"
     eval $CMD2
+    RET1=$?
     
     if $SONAR_PUBLISH ; then
       echo "(publish 2 sonar)"
       eval $COMMAND
+      RET2=$?
+      if [[ ! $RET1 || ! $RET2 ]]; then
+        exit 1;
+      fi
     fi
     
   else
