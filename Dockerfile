@@ -1,12 +1,17 @@
-FROM alpine
-## Based on this example http://stackoverflow.com/a/40612088/865222
+FROM openjdk:8-jre-alpine
+
 ENV SONAR_SCANNER_VERSION 3.0.3.778-linux
+ENV SONARDIR /var/opt/sonar-scanner-${SONAR_SCANNER_VERSION}
+ENV SONARBIN ${SONARDIR}/bin/sonar-scanner
 
 RUN apk add --no-cache wget && \
-    wget --no-check-certificate https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip && \
-    unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION} && \
+    cd /var/opt/ && \
+    wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip && \
+    unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip && \
     rm sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip && \
-    ln -s /sonar-scanner-${SONAR_SCANNER_VERSION}/bin/sonar-scanner /usr/bin/sonar-scanner && \
+    rm -rf ${SONARDIR}/jre && \
+    sed -i -e 's/use_embedded_jre=true/use_embedded_jre=false/' ${SONARBIN} ${SONARBIN}-debug && \
+    ln -s ${SONARBIN} /usr/bin/sonar-scanner && \
     apk del wget
 
 COPY sonar-scanner-run.sh /usr/bin/

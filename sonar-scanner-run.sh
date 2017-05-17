@@ -45,9 +45,12 @@
   if [ ! -z "$SONAR_LANGUAGE" ]; then
     COMMAND="$COMMAND -Dsonar.language=\"$SONAR_LANGUAGE\""
   fi
+  if [ ! -z "$SONAR_TESTS" ]; then
+    COMMAND="$COMMAND -Dsonar.tests=\"$SONAR_TESTS\""
+  fi
 
   if [ ! -z "$SONAR_DEBUG" ]; then
-    COMMAND="$COMMAND -X"
+    COMMAND="$COMMAND -Dsonar.verbose=true"
   fi
 
   if $SONAR_GITLAB_COMMENT ; then
