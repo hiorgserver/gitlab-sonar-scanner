@@ -4,7 +4,7 @@ ENV SONAR_SCANNER_VERSION 3.0.3.778-linux
 ENV SONARDIR /var/opt/sonar-scanner-${SONAR_SCANNER_VERSION}
 ENV SONARBIN ${SONARDIR}/bin/sonar-scanner
 
-RUN apk add --no-cache wget && \
+RUN apk add --update --no-cache wget nodejs && \
     cd /var/opt/ && \
     wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip && \
     unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip && \
