@@ -73,7 +73,7 @@
       echo "(publish 2 sonar)"
       eval $COMMAND
       RET2=$?
-      if [[ ! $RET1 || ! $RET2 ]]; then
+      if [ $RET1 -ne 0 -o $RET2 -ne 0 ]; then
         exit 1;
       fi
     fi
