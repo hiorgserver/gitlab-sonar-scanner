@@ -53,32 +53,14 @@
     COMMAND="$COMMAND -Dsonar.verbose=true"
   fi
 
-  if $SONAR_GITLAB_COMMENT ; then
-    CMD2="$COMMAND -Dsonar.analysis.mode=\"issues\""
-    if [ ! -z "$CI_PROJECT_ID" ]; then
-      CMD2="$CMD2 -Dsonar.gitlab.project_id=\"$CI_PROJECT_ID\""
-    fi
-    if [ ! -z "$CI_COMMIT_SHA" ]; then
-      CMD2="$CMD2 -Dsonar.gitlab.commit_sha=\"$CI_COMMIT_SHA\""
-    fi
-    if [ ! -z "$CI_COMMIT_REF_NAME" ]; then
-      CMD2="$CMD2 -Dsonar.gitlab.ref_name=\"$CI_COMMIT_REF_NAME\""
-    fi
-    
-    echo "(comment 2 gitlab)"
-    eval $CMD2
-    RET1=$?
-    
-    if $SONAR_PUBLISH ; then
-      echo "(publish 2 sonar)"
-      eval $COMMAND
-      RET2=$?
-      if [ $RET1 -ne 0 -o $RET2 -ne 0 ]; then
-        exit 1;
-      fi
-    fi
-    
-  else
-    echo "(publish 2 sonar)"
-    eval $COMMAND
+  if [ ! -z "$CI_PROJECT_ID" ]; then
+    COMMAND="$COMMAND -Dsonar.gitlab.project_id=\"$CI_PROJECT_ID\""
   fi
+  if [ ! -z "$CI_COMMIT_SHA" ]; then
+    COMMAND="$COMMAND -Dsonar.gitlab.commit_sha=\"$CI_COMMIT_SHA\""
+  fi
+  if [ ! -z "$CI_COMMIT_REF_NAME" ]; then
+    COMMAND="$COMMAND -Dsonar.gitlab.ref_name=\"$CI_COMMIT_REF_NAME\""
+  fi
+    
+  eval $COMMAND
