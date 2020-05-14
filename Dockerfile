@@ -1,6 +1,6 @@
 FROM openjdk:8-jre-alpine
 
-ENV SONAR_SCANNER_VERSION 3.0.3.778-linux
+ENV SONAR_SCANNER_VERSION 4.3.0.2102-linux
 ENV SONARDIR /var/opt/sonar-scanner-${SONAR_SCANNER_VERSION}
 ENV SONARBIN ${SONARDIR}/bin/sonar-scanner
 
